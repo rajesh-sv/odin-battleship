@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest"
 import { Cell } from "../Cell"
-import { Carrier } from "../Ship"
+import { Ship } from "../Ship"
 
 describe("game board cell test suite", () => {
   const cell = new Cell()
@@ -10,8 +10,8 @@ describe("game board cell test suite", () => {
   })
 
   test("cell has a carrier", () => {
-    const carrier = new Carrier()
-    cell.setShip(carrier)
-    expect(cell.getShip()).toBe(carrier)
+    const ship = new Ship(1)
+    cell.setShip(ship)
+    expect(cell.getShip()).toBe(ship)
   })
 })

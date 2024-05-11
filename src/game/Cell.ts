@@ -1,7 +1,7 @@
 import { Ship } from "./Ship"
 
 class Cell {
-  ship: Ship | null
+  private ship: Ship | null
   constructor() {
     this.ship = null
   }
