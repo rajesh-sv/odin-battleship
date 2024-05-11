@@ -1,7 +1,7 @@
 class Ship {
-  length: number
-  direction: string
-  damage: number
+  private length: number
+  private direction: string
+  private damage: number
 
   constructor(length: number) {
     this.length = length
@@ -64,4 +64,4 @@ class PatrolShip extends Ship {
   }
 }
 
-export { Carrier, Battleship, Destroyer, Submarine, PatrolShip }
+export { Ship, Carrier, Battleship, Destroyer, Submarine, PatrolShip }
