@@ -2,8 +2,11 @@ import { Ship } from "./Ship"
 
 class Cell {
   private ship: Ship | null
+  private played: boolean
+
   constructor() {
     this.ship = null
+    this.played = false
   }
 
   getShip() {
@@ -12,6 +15,14 @@ class Cell {
 
   setShip(ship: Ship) {
     this.ship = ship
+  }
+
+  isPlayed() {
+    return this.played
+  }
+
+  playCell() {
+    this.played = true
   }
 }
 
