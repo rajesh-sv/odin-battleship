@@ -4,7 +4,6 @@ import { Ship } from "./Ship"
 class GameBoard {
   private size: number
   private board: Cell[][]
-  private cellsPlayed: Set<number>
   private shipCount: number
 
   constructor(size: number) {
@@ -18,8 +17,6 @@ class GameBoard {
       this.board.push(row)
     }
 
-    this.cellsPlayed = new Set()
-
     this.shipCount = 0
   }
 
@@ -27,19 +24,15 @@ class GameBoard {
     return this.size
   }
 
-  private canPlaceShip(ship: Ship, x: number, y: number) {
-    if (
-      x < 0 ||
-      x + ship.getLength() > this.size ||
-      y < 0 ||
-      y + ship.getLength() > this.size
-    )
-      return false
+  canPlaceShip(ship: Ship, x: number, y: number) {
+    if (x < 0 || x >= this.size || y < 0 || y >= this.size) return false
 
     if (ship.getDir() === "horizontal") {
+      if (y + ship.getLength() > this.size) return false
       for (let j = y; j < y + ship.getLength(); j++)
         if (this.board[x][j].getShip()) return false
     } else {
+      if (x + ship.getLength() > this.size) return false
       for (let i = x; i < x + ship.getLength(); i++)
         if (this.board[i][y].getShip()) return false
     }
@@ -62,20 +55,24 @@ class GameBoard {
     return true
   }
 
-  private canPlayCell(x: number, y: number) {
-    if (x < 0 || x >= this.size || y < 0 || y >= this.size) return false
+  getCellStatus(x: number, y: number) {
+    if (x < 0 || x >= this.size || y < 0 || y >= this.size) return "invalid"
 
-    const cell = x * this.size + y
-    if (this.cellsPlayed.has(cell)) return false
+    const cell = this.board[x][y]
+    if (!cell.isPlayed()) return "not played"
 
-    return true
+    const ship = cell.getShip()
+    if (!ship) return "played"
+
+    if (!ship.isSunk()) return "ship hit"
+
+    return "ship sunk"
   }
 
   playCell(x: number, y: number) {
-    if (!this.canPlayCell(x, y)) return false
+    if (this.getCellStatus(x, y) !== "not played") return false
 
-    const cell = x * this.size + y
-    this.cellsPlayed.add(cell)
+    this.board[x][y].playCell()
 
     const ship = this.board[x][y].getShip()
     if (ship) {

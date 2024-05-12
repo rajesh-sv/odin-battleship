@@ -16,6 +16,7 @@ describe("game board test suite", () => {
 
   test("cannot place a vertical ship of length 5 at row 6", () => {
     const ship = new Ship(5)
+    ship.changeDir()
     expect(board.placeShip(ship, 6, 0)).toBe(false)
   })
 
